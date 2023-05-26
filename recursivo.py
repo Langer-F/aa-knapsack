@@ -1,4 +1,5 @@
 import unittest
+import random
 
 VALOR = 0
 PESO = 1
@@ -96,6 +97,22 @@ class KnapsackRecursivoTest(unittest.TestCase):
                          ]
         escolhas, valor_escolhas = knapsack_recursivo(CASO_CLASSICO, 10)
         self.assertEqual(valor_escolhas, 0)
+
+    def test_longo(self):
+        itens = [(10,1), (100, 15), (5, 5), (15,2), (35,7), (30, 3), (3, 30), (7,10)]
+        CASO_CLASSICO = []
+        for i in range(30):
+            CASO_CLASSICO += random.choices(itens)
+        escolhas, valor_escolhas = knapsack_recursivo(CASO_CLASSICO, 60)
+        self.assertNotEqual(len(escolhas), 0)
+
+    def test_limite(self):
+        itens = [(10,1), (100, 15), (5, 5), (15,2), (35,7), (30, 3), (3, 30), (7,10)]
+        CASO_CLASSICO = []
+        for i in range(31):
+            CASO_CLASSICO += random.choices(itens)
+        escolhas, valor_escolhas = knapsack_recursivo(CASO_CLASSICO, 60)
+        self.assertNotEqual(len(escolhas), 0)
 
 if __name__ == "__main__":
     unittest.main()
