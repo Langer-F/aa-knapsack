@@ -31,7 +31,7 @@ def knapsack_memoizado(objetos: list, mochila_capacidade: int, memoria: dict):
 def knapsack(objetos: list, mochila_capacidade: int):
     return knapsack_memoizado(objetos, mochila_capacidade, {})
 
-class KnapsackRecursivoTest(unittest.TestCase):
+class KnapsackMemoizadoTest(unittest.TestCase):
     def test_vazio(self):
         self.assertEqual(knapsack([], 600)[0], [])
         self.assertEqual(knapsack([], 200)[1], 0)
