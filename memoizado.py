@@ -1,8 +1,8 @@
 import unittest
 import random
 
-VALOR = 0
-PESO = 1
+VALOR = 1
+PESO = 0
 
     
 
