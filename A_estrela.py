@@ -15,38 +15,47 @@ def calcula_peso_mochila(mochila, objetos):
         peso += objetos[i][0]
     return peso
 
-def mochila_PD(K,V):
-    """Recebe uma capacidade K e um vetor de tuplas (peso,valor), e retorna a melhor mochila"""
+def pode_colocar_algo_na_mochila(mochila,objetos,capacidade):
+    """Verifica se ainda é possivel colocar alguma coisa na mochila"""
+    peso_atual = calcula_peso_mochila(mochila,objetos)
+    for i in range(len(objetos)):
+        if i not in mochila:
+            if peso_atual + objetos[i][0] <=capacidade:
+                return True
+    return False
 
-    #eu incremento o K em 1 por que a matriz tera K+1 colunas, visto que vai de 0 até K
-    K=K+1
-    
-    n = len(V)
-    mochilas = np.empty((n,K),dtype=object)
-    
-    #faz a primeira linha
-    for j in range(K):
-        if j < V[0][0]:
-            mochilas[0][j] = []
-            
-        else:
-            mochilas[0][j] = [0]
-    
-    #agora fazemos as outras linhas
-    for i in range(1,n):
-        for j in range(K):
-            #se a mochilas nao tiver capacidade pro peso do objeto desta linha, simplesmente copia a mochilas anterior
-            if j < V[i][0]:   
-                mochilas[i][j] = mochilas[i-1][j].copy()
-            
-            #se a mochilas tem capacidade, pega o maximo entre (nao levar o objeto, levar o objeto e somar com uma mochilas de capacidade menor)
-            else:
-                if calcula_valor_mochila(mochilas[i-1][j],V) >(V[i][1] + calcula_valor_mochila(mochilas[i-1][j-V[i][0]],V)): 
-                    mochilas[i][j] = mochilas[i-1][j].copy()
-                else:
-                    mochilas[i][j] = mochilas[i-1][j-V[i][0]].copy()
-                    mochilas[i][j] += [i]
-    return (mochilas[n-1][K-1])
+def calcula_heuristica(Mochila,Objetos,Capacidade):
+    peso_total_que_nao_esta_na_mochila = 0
+    valor_total_que_nao_esta_na_mochila = 0
+
+    for i in range(len(Objetos)):
+        if i not in Mochila:
+            peso_total_que_nao_esta_na_mochila += Objetos[i][0]
+            valor_total_que_nao_esta_na_mochila += Objetos[i][1]
+
+    densidade_geral = valor_total_que_nao_esta_na_mochila/peso_total_que_nao_esta_na_mochila
+    peso_restante = Capacidade - calcula_peso_mochila(Mochila,Objetos)
+    return densidade_geral*peso_restante
+
+def a_estrela(Capacidade,Objetos):
+    if Capacidade ==0:
+        return []
+    mochila = []
+    while pode_colocar_algo_na_mochila(mochila,Objetos,Capacidade):
+        maior_valor = 0
+        maior_i = -1
+        for i in range(len(Objetos)):
+            if i not in mochila and ((calcula_peso_mochila(mochila,Objetos)+Objetos[i][0])<=Capacidade):
+                mochila_temporaria = mochila.copy()
+                mochila_temporaria += [i]
+                valor = calcula_valor_mochila(mochila_temporaria,Objetos) + calcula_heuristica(mochila_temporaria,Objetos,Capacidade)
+                if valor>maior_valor:
+                    maior_valor = valor
+                    maior_i = i
+        
+        if maior_i not in mochila:
+            mochila += [maior_i]
+    return mochila
 
 def gera_todas_mochilas(n):
     """gera todas as mochilas possiveis, dado um numero n de elementos disponíveis para serem colocados na mochila"""
@@ -68,9 +77,7 @@ def mochila_forca_bruta_iterativo(K,V):
 
     return melhor_mochila
 
-
 def main():
-    # os objetos sao formados por (PESO,VALOR), entao uma tupla (4,2) representa um objeto que pesa 4 e tem valor 2
     objetos = [(1,3),
                (2,4),
                (3,5),
@@ -80,10 +87,9 @@ def main():
                (10,1),
                (1,10)]
     capacidade = 10
-
-
-    print('-----------Mochila com PD---------')
-    mochila = mochila_PD(capacidade,objetos)
+    
+    print('-----------Mochila com A*---------')
+    mochila = a_estrela(capacidade,objetos)
     print(mochila)
     print(f'Valor = {calcula_valor_mochila(mochila,objetos)}')
     print(f'Peso = {calcula_peso_mochila(mochila,objetos)}')
@@ -92,6 +98,10 @@ def main():
     print(mochila)
     print(f'Valor = {calcula_valor_mochila(mochila,objetos)}')
     print(f'Peso = {calcula_peso_mochila(mochila,objetos)}')
-    
+    """
+    mochila = [3]
+    print(calcula_heuristica(mochila,objetos,capacidade))
+    """
+
 if __name__ == '__main__':
     main()
