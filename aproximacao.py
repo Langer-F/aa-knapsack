@@ -15,8 +15,8 @@ def mochila_aproximado(peso_maximo, vetor_tupla_peso_valor, erro=0.1):
         peso, valor = tupla_peso_valor[0], floor(tupla_peso_valor[1] / lambda_divisor)
         vetor_tupla_peso_valor_atualizado[i] = (peso, valor)
 
-    return mochila_PD(peso_maximo, vetor_tupla_peso_valor_atualizado) 
-    
+    return mochila_PD(peso_maximo, vetor_tupla_peso_valor_atualizado)
+
 def main():
     # os objetos sao formados por (PESO,VALOR), entao uma tupla (4,2) representa um objeto que pesa 4 e tem valor 2
     objetos = [(1,3),
@@ -65,6 +65,6 @@ def main():
     print(mochila)
     print(f'Valor = {calcula_valor_mochila(mochila,objetos)}')
     print(f'Peso = {calcula_peso_mochila(mochila,objetos)}')
-    
+
 if __name__ == '__main__':
     main()

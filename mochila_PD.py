@@ -20,25 +20,25 @@ def mochila_PD(K,V):
 
     #eu incremento o K em 1 por que a matriz tera K+1 colunas, visto que vai de 0 até K
     K=K+1
-    
+
     n = len(V)
     mochilas = np.empty((n,K),dtype=object)
-    
+
     #faz a primeira linha
     for j in range(K):
         if j < V[0][0]:
             mochilas[0][j] = []
-            
+
         else:
             mochilas[0][j] = [0]
-    
+
     #agora fazemos as outras linhas
     for i in range(1,n):
         for j in range(K):
             #se a mochilas nao tiver capacidade pro peso do objeto desta linha, simplesmente copia a mochilas anterior
-            if j < V[i][0]:   
+            if j < V[i][0]:
                 mochilas[i][j] = mochilas[i-1][j].copy()
-            
+
             #se a mochilas tem capacidade, pega o maximo entre (nao levar o objeto, levar o objeto e somar com uma mochilas de capacidade menor)
             else:
                 if calcula_valor_mochila(mochilas[i-1][j],V) >(V[i][1] + calcula_valor_mochila(mochilas[i-1][j-V[i][0]],V)): 

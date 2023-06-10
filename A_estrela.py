@@ -54,7 +54,7 @@ def main():
                (10,1),
                (1,10)]
     capacidade = 10
-    
+
     print('-----------Mochila com A*---------')
     mochila = a_estrela(capacidade,objetos)
     print(mochila)
