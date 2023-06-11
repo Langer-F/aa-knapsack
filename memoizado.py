@@ -4,7 +4,7 @@ import random
 VALOR = 1
 PESO = 0
 
-    
+
 
 def knapsack_memoizado(objetos: list, mochila_capacidade: int, memoria: dict):
     chave = str(objetos) + str(mochila_capacidade)
