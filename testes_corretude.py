@@ -32,10 +32,12 @@ def main():
     print(f'A*: {calcula_valor_mochila(a_estrela(capacidade,objetos),objetos)}')
     mochila,valor = knapsack(objetos,capacidade)
     print(f'Memoizado: {valor}')
+    print(f'Aproximação com erro(0.5): {calcula_valor_mochila(mochila_aproximado(capacidade,objetos,0.5),objetos)}')
 
     print('-------------------------------------------------------')
     print('Agora testando com objetos aleatorios:')
     print('-------------------------------------------------------')
+    
     numero_de_ciclos = 5
     objetos = gera_objetos_aleatorios(15,15)
     for _ in range(numero_de_ciclos):
@@ -47,6 +49,8 @@ def main():
         print(f'A*: {calcula_valor_mochila(a_estrela(capacidade,objetos),objetos)}')
         mochila,valor = knapsack(objetos,capacidade)
         print(f'Memoizado: {valor}')
+        erro = np.random.randint(0,100)/100
+        print(f'Aproximação com erro({erro}): {calcula_valor_mochila(mochila_aproximado(capacidade,objetos,erro),objetos)}')
         print('--------------------------------------------')
 
 
